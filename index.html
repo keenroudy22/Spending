@@ -1,27 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>Expense Tracker</h1>
-        <form id="expenseForm">
-            <label for="amount">Amount Spent:</label>
+        <form id="expense-form">
             <input type="number" id="amount" placeholder="Enter amount" required>
-            <button type="submit">Add Expense</button>
+            <input type="submit" value="Add Expense">
+            <div id="message"></div>
         </form>
-        <div id="totalContainer">
-            <h2>Total Expenses:</h2>
-            <p id="total">0.00</p>
-        </div>
-        <div id="reportContainer">
-            <h2>Email Report</h2>
-            <button id="emailButton">Send Report</button>
-        </div>
     </div>
     <script src="script.js"></script>
 </body>
