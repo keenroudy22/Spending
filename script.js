@@ -35,13 +35,15 @@ function addExpense(event) {
 
 function saveData() {
     const expenses = Array.from(historyList.children).map(item => item.textContent);
-    localStorage.setItem('total', total.toFixed(2));
-    localStorage.setItem('expenses', JSON.stringify(expenses));
+    const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+    localStorage.setItem(`total_${currentMonth}`, total.toFixed(2));
+    localStorage.setItem(`expenses_${currentMonth}`, JSON.stringify(expenses));
 }
 
 function loadSavedData() {
-    const savedTotal = localStorage.getItem('total');
-    const savedExpenses = localStorage.getItem('expenses');
+    const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+    const savedTotal = localStorage.getItem(`total_${currentMonth}`);
+    const savedExpenses = localStorage.getItem(`expenses_${currentMonth}`);
     
     if (savedTotal) {
         total = parseFloat(savedTotal);
@@ -56,4 +58,29 @@ function loadSavedData() {
             historyList.appendChild(listItem);
         });
     }
+
+    // Reset data at the start of a new month
+    checkAndResetMonth();
+}
+
+function checkAndResetMonth() {
+    const lastMonth = localStorage.getItem('lastMonth');
+    const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+    
+    if (lastMonth && lastMonth !== currentMonth) {
+        // Send email report
+        sendEmailReport(lastMonth);
+        // Clear old month data
+        localStorage.removeItem(`total_${lastMonth}`);
+        localStorage.removeItem(`expenses_${lastMonth}`);
+    }
+    
+    // Update lastMonth in local storage
+    localStorage.setItem('lastMonth', currentMonth);
+}
+
+function sendEmailReport(month) {
+    // You need a backend service to send emails
+    // This is a placeholder function
+    console.log(`Sending email report for ${month}...`);
 }
