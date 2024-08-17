@@ -1,32 +1,31 @@
-const expenseForm = document.getElementById('expense-form');
-const totalDisplay = document.getElementById('total');
-let total = 0;
+// Initialize the expense tracker
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('expense-form');
+    const totalDisplay = document.getElementById('total');
 
-// Load total from localStorage if available
-window.onload = function() {
-    if (localStorage.getItem('monthlyTotal')) {
-        total = parseFloat(localStorage.getItem('monthlyTotal'));
-        totalDisplay.textContent = total.toFixed(2);
+    // Load saved total from localStorage
+    let total = parseFloat(localStorage.getItem('monthlyTotal')) || 0;
+    let savedMonth = localStorage.getItem('month');
+    let currentMonth = new Date().getMonth();
+
+    // Reset total if it's a new month
+    if (savedMonth == null || parseInt(savedMonth) !== currentMonth) {
+        total = 0;
+        localStorage.setItem('monthlyTotal', total);
+        localStorage.setItem('month', currentMonth);
     }
-};
 
-// Add expense and update total
-expenseForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const amount = parseFloat(document.getElementById('amount').value);
-    if (amount > 0) {
-        total += amount;
-        totalDisplay.textContent = total.toFixed(2);
-        localStorage.setItem('monthlyTotal', total.toFixed(2));
-        document.getElementById('amount').value = '';
-    }
-});
-
-// Reset total at the beginning of a new month
-const currentMonth = new Date().getMonth();
-if (localStorage.getItem('month') !== currentMonth.toString()) {
-    localStorage.setItem('monthlyTotal', '0');
-    localStorage.setItem('month', currentMonth.toString());
-    total = 0;
     totalDisplay.textContent = total.toFixed(2);
-}
+
+    // Handle form submission
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const amount = parseFloat(document.getElementById('amount').value);
+        if (amount > 0) {
+            total += amount;
+            localStorage.setItem('monthlyTotal', total);
+            totalDisplay.textContent = total.toFixed(2);
+            form.reset();
+        }
+    });
+});
