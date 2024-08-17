@@ -1,4 +1,3 @@
-// Replace with your web app URL
 const scriptUrl = 'https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec';
 
 async function updateTotal() {
