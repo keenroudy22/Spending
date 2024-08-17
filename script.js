@@ -29,7 +29,11 @@ function updateTotal() {
   fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec?action=getTotal')
     .then(response => response.json())
     .then(data => {
-      document.getElementById('total').textContent = `Total for ${data.month}: $${data.total.toFixed(2)}`;
+      if (data && data.month && data.total !== undefined) {
+        document.getElementById('total').textContent = `Total for ${data.month}: $${data.total.toFixed(2)}`;
+      } else {
+        document.getElementById('total').textContent = 'Error loading total';
+      }
     })
     .catch(error => {
       document.getElementById('total').textContent = 'Error loading total';
