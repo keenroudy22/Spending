@@ -51,13 +51,12 @@ document.getElementById('addExpenseButton').addEventListener('click', async () =
     document.getElementById('amount').value = '';
     document.getElementById('description').value = '';
 
-    // Optionally, you can call fetchMonthlyTotal() here to update the displayed total
+    // Optionally, update the total displayed on the page
     fetchMonthlyTotal();
   } catch (error) {
     console.error('Error:', error);
   }
 });
-
 
 // Call the function to fetch the monthly total when the page loads
 document.addEventListener('DOMContentLoaded', fetchMonthlyTotal);
