@@ -1,7 +1,7 @@
 // Function to fetch and display the current month's total
 async function fetchMonthlyTotal() {
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec');
+    const response = await fetch('https://script.google.com/macros/s/AKfycbwOri4AY3JSXMQSDtjHry17CS-MSaOnNGNlsrVs0SKGo_sUvRpZ-H3KNS6IlTL8pIE/exec');
     
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -18,57 +18,37 @@ async function fetchMonthlyTotal() {
   }
 }
 
-// Function to post new expense data
-async function postExpenseData(amount, description) {
-  try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ amount: amount, description: description })
-    });
-    
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+// Function to handle adding a new expense
+async function addExpense() {
+  const amount = document.getElementById('amount').value;
+  const description = document.getElementById('description').value;
+
+  if (amount) {
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwOri4AY3JSXMQSDtjHry17CS-MSaOnNGNlsrVs0SKGo_sUvRpZ-H3KNS6IlTL8pIE/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ amount: parseFloat(amount), description })
+      });
+
+      if (response.ok) {
+        alert('Expense added successfully');
+        fetchMonthlyTotal(); // Refresh the total
+      } else {
+        alert('Failed to add expense');
+      }
+    } catch (error) {
+      console.error('Error adding expense:', error);
     }
-    
-    const result = await response.text();
-    console.log('Post result:', result);
-    fetchMonthlyTotal(); // Refresh the total display
-  } catch (error) {
-    console.error('Error posting data:', error);
+  } else {
+    alert('Please enter an amount.');
   }
 }
 
-// Event listener for the Add Expense button
-document.getElementById('addExpenseButton').addEventListener('click', async () => {
-    const amount = document.getElementById('amount').value;
-    const description = document.getElementById('description').value;
+// Add event listener to the button
+document.getElementById('addExpenseButton').addEventListener('click', addExpense);
 
-    try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ amount: parseFloat(amount), description: description })
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const result = await response.text();
-        console.log(result);
-
-        // Refresh the total after adding an expense
-        fetchMonthlyTotal();
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
-
-
-// Fetch the monthly total when the page loads
+// Call the function to fetch the monthly total when the page loads
 document.addEventListener('DOMContentLoaded', fetchMonthlyTotal);
