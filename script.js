@@ -1,26 +1,31 @@
-document.getElementById('expense-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const amount = document.getElementById('amount').value;
-    
-    fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec', {
-        method: 'POST',
-        contentType: 'application/json',
-        body: JSON.stringify({ amount: parseFloat(amount) })
-    })
-    .then(response => response.text())
-    .then(text => {
-        if (text === 'Success') {
-            alert('Expense added successfully!');
-            document.getElementById('amount').value = ''; // Clear the input field
-            fetchTotal(); // Optionally update the displayed total
-        } else {
-            alert('Failed to add expense.');
-        }
-    });
-});
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec';
 
-function fetchTotal() {
-    // Optionally, fetch and display the total from the Google Sheets
-    // Implementation depends on how you wish to retrieve and display it
+function addExpense() {
+    const amount = document.getElementById('amount').value;
+    if (amount) {
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            contentType: 'application/json',
+            body: JSON.stringify({ amount })
+        })
+        .then(response => response.text())
+        .then(() => {
+            document.getElementById('amount').value = '';
+            getTotalForMonth();
+        })
+        .catch(error => console.error('Error:', error));
+    }
 }
+
+function getTotalForMonth() {
+    fetch(SCRIPT_URL + '?action=getTotal')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('month').innerText = `Month: ${data.month}`;
+            document.getElementById('total').innerText = `Total: $${data.total.toFixed(2)}`;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Initialize display
+getTotalForMonth();
