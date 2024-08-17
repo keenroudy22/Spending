@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Daily Expense Tracker</h1>
+        <form id="expense-form">
+            <input type="number" id="amount" placeholder="Enter amount" required>
+            <button type="submit">Add Expense</button>
+        </form>
+        <h2>Total: $<span id="total">0.00</span></h2>
+        <h3>History:</h3>
+        <ul id="history-list"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
