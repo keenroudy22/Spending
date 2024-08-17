@@ -33,11 +33,13 @@ async function addExpense() {
         body: JSON.stringify({ amount: parseFloat(amount), description })
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.status === 'success') {
         alert('Expense added successfully');
         fetchMonthlyTotal(); // Refresh the total
       } else {
-        alert('Failed to add expense');
+        alert('Failed to add expense: ' + result.message);
       }
     } catch (error) {
       console.error('Error adding expense:', error);
