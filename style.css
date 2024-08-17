@@ -1,48 +1,30 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
 }
 
-.container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+form {
+  margin: 20px auto;
+  max-width: 300px;
 }
 
-h1 {
-    margin-bottom: 20px;
+label {
+  margin-right: 10px;
 }
 
-#month, #total {
-    margin: 10px 0;
-    font-size: 1.2em;
-}
-
-input[type="number"] {
-    padding: 10px;
-    font-size: 1em;
-    width: 80%;
-    margin-bottom: 10px;
+input, button {
+  padding: 10px;
+  margin: 5px;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #218838;
+  background-color: #45a049;
 }
+
