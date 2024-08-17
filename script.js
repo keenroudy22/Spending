@@ -1,4 +1,3 @@
-
 document.getElementById('expense-form').addEventListener('submit', addExpense);
 
 let total = 0;
@@ -35,20 +34,26 @@ function addExpense(event) {
 }
 
 function saveData() {
+    const expenses = Array.from(historyList.children).map(item => item.textContent);
     localStorage.setItem('total', total.toFixed(2));
-    localStorage.setItem('history', historyList.innerHTML);
+    localStorage.setItem('expenses', JSON.stringify(expenses));
 }
 
 function loadSavedData() {
     const savedTotal = localStorage.getItem('total');
-    const savedHistory = localStorage.getItem('history');
+    const savedExpenses = localStorage.getItem('expenses');
     
     if (savedTotal) {
         total = parseFloat(savedTotal);
         totalElement.textContent = total.toFixed(2);
     }
     
-    if (savedHistory) {
-        historyList.innerHTML = savedHistory;
+    if (savedExpenses) {
+        const expenses = JSON.parse(savedExpenses);
+        expenses.forEach(expense => {
+            const listItem = document.createElement('li');
+            listItem.textContent = expense;
+            historyList.appendChild(listItem);
+        });
     }
 }
