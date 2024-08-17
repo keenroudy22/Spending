@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Expense Tracker</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Expense Tracker</h1>
-  <form id="expense-form">
-    <label for="amount">Amount:</label>
-    <input type="number" id="amount" name="amount" required><br><br>
-    <label for="description">Description:</label>
-    <input type="text" id="description" name="description"><br><br>
-    <button type="button" onclick="addExpense()">Add Expense</button>
-  </form>
-  <h2>Current Month Total: <span id="total">Loading...</span></h2>
-  <h2>Month: <span id="month">Loading...</span></h2>
-  <script src="script.js"></script>
+    <h1>Expense Tracker</h1>
+    <p>Total for <span id="month">Loading...</span>: $<span id="total">0.00</span></p>
+    <form id="expenseForm">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" required>
+        <label for="description">Description:</label>
+        <input type="text" id="description">
+        <button type="button" id="addExpenseButton">Add Expense</button>
+    </form>
+    <script src="script.js"></script>
 </body>
 </html>
