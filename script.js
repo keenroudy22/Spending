@@ -1,27 +1,26 @@
 document.getElementById('expense-form').addEventListener('submit', function(event) {
     event.preventDefault();
+    
     const amount = document.getElementById('amount').value;
-    if (!amount) {
-        document.getElementById('message').innerHTML = '<p class="error">Please enter an amount.</p>';
-        return;
-    }
+    
     fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        contentType: 'application/json',
         body: JSON.stringify({ amount: parseFloat(amount) })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.result === 'success') {
-            document.getElementById('message').innerHTML = '<p class="success">Expense added successfully!</p>';
-            document.getElementById('amount').value = '';
+    .then(response => response.text())
+    .then(text => {
+        if (text === 'Success') {
+            alert('Expense added successfully!');
+            document.getElementById('amount').value = ''; // Clear the input field
+            fetchTotal(); // Optionally update the displayed total
         } else {
-            document.getElementById('message').innerHTML = '<p class="error">There was an error adding the expense.</p>';
+            alert('Failed to add expense.');
         }
-    })
-    .catch(error => {
-        document.getElementById('message').innerHTML = '<p class="error">Network error. Please try again later.</p>';
     });
 });
+
+function fetchTotal() {
+    // Optionally, fetch and display the total from the Google Sheets
+    // Implementation depends on how you wish to retrieve and display it
+}
