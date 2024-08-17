@@ -1,48 +1,61 @@
-const SHEET_ID = '1dpTRaHfpATX85PvcrcTStXHvFdL_NqXG4UhvQXHqfSs'; // Your Sheet ID
-const API_KEY = 'AIzaSyBS60n0zmjiZJgHHHIB4AXGlE6_DfoTXag'; // Your API key
-const RANGE = 'Sheet1!A:D'; // Adjust the range if needed
+const expenseForm = document.getElementById('expenseForm');
+const amountInput = document.getElementById('amount');
+const totalDisplay = document.getElementById('total');
+const emailButton = document.getElementById('emailButton');
 
-async function addExpense() {
-    const date = document.getElementById('date').value;
-    const amount = document.getElementById('amount').value;
-    const description = document.getElementById('description').value;
+const sheetId = '1dpTRaHfpATX85PvcrcTStXHvFdL_NqXG4UhvQXHqfSs';
+const apiKey = 'AIzaSyBS60n0zmjiZJgHHHIB4AXGlE6_DfoTXag';
 
-    if (!date || !amount || !description) {
-        alert('Please fill all fields.');
-        return;
-    }
+let totalExpenses = 0;
 
-    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}:append?valueInputOption=RAW&key=${API_KEY}`, {
+async function fetchExpenses() {
+    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Expenses?key=${apiKey}`);
+    const data = await response.json();
+    const values = data.values || [];
+    totalExpenses = values.reduce((sum, row) => sum + parseFloat(row[1] || 0), 0);
+    totalDisplay.textContent = totalExpenses.toFixed(2);
+}
+
+async function addExpense(amount) {
+    const today = new Date().toISOString().split('T')[0];
+    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Expenses:append?valueInputOption=RAW&key=${apiKey}`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            values: [[date, amount, description]]
+            range: 'Expenses',
+            values: [[today, amount]]
         })
     });
-
-    if (response.ok) {
-        alert('Expense added!');
-        updateTotal();
-    } else {
-        alert('Failed to add expense.');
-    }
+    const result = await response.json();
+    console.log('Expense added:', result);
+    totalExpenses += parseFloat(amount);
+    totalDisplay.textContent = totalExpenses.toFixed(2);
 }
 
-async function updateTotal() {
-    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
+async function sendEmailReport() {
+    const today = new Date().toISOString().split('T')[0];
+    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Expenses?key=${apiKey}`);
     const data = await response.json();
-    const rows = data.values || [];
-    let total = 0;
+    const values = data.values || [];
+    const reportData = values.map(row => `${row[0]}: ${row[1]}`).join('\n');
 
-    rows.forEach(row => {
-        const amount = parseFloat(row[1]);
-        if (!isNaN(amount)) total += amount;
-    });
-
-    document.getElementById('total').textContent = total.toFixed(2);
+    // Use your email service provider here to send the email.
+    console.log('Sending email report with data:', reportData);
 }
 
-// Initialize total on page load
-window.onload = updateTotal;
+expenseForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const amount = amountInput.value;
+    if (amount) {
+        addExpense(amount);
+        amountInput.value = '';
+    }
+});
+
+emailButton.addEventListener('click', () => {
+    sendEmailReport();
+});
+
+fetchExpenses();
