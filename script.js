@@ -1,44 +1,38 @@
-document.getElementById('addExpenseForm').addEventListener('submit', function(event) {
-  event.preventDefault();
-  
-  const amount = document.getElementById('amount').value;
-  if (amount && !isNaN(amount)) {
-    fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ amount: parseFloat(amount) })
-    })
-    .then(response => response.text())
-    .then(result => {
-      if (result === 'Success') {
-        document.getElementById('amount').value = '';
-        updateTotal();
-      } else {
-        alert('Failed to add expense: ' + result);
-      }
-    })
-    .catch(error => console.error('Error:', error));
-  } else {
-    alert('Please enter a valid amount');
-  }
-});
+// Replace with your web app URL
+const scriptUrl = 'https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec';
 
-function updateTotal() {
-  fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec?action=getTotal')
-    .then(response => response.json())
-    .then(data => {
-      if (data && data.month && data.total !== undefined) {
-        document.getElementById('total').textContent = `Total for ${data.month}: $${data.total.toFixed(2)}`;
-      } else {
-        document.getElementById('total').textContent = 'Error loading total';
-      }
-    })
-    .catch(error => {
-      document.getElementById('total').textContent = 'Error loading total';
-      console.error('Error:', error);
-    });
+async function updateTotal() {
+  try {
+    const response = await fetch(`${scriptUrl}?action=getTotal`);
+    const data = await response.json();
+    document.getElementById('month').textContent = `Month: ${data.month}`;
+    document.getElementById('total').textContent = `Total: $${data.total.toFixed(2)}`;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 }
 
-window.onload = updateTotal;
+async function addExpense() {
+  const amount = parseFloat(document.getElementById('amount').value);
+  if (isNaN(amount) || amount <= 0) {
+    alert('Please enter a valid amount');
+    return;
+  }
+
+  try {
+    await fetch(scriptUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ amount }),
+    });
+    document.getElementById('amount').value = ''; // Clear the input
+    updateTotal(); // Update the total after adding
+  } catch (error) {
+    console.error('Error adding expense:', error);
+  }
+}
+
+// Initial load
+updateTotal();
