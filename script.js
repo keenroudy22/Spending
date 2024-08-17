@@ -42,17 +42,33 @@ async function postExpenseData(amount, description) {
 }
 
 // Event listener for the Add Expense button
-document.getElementById('addExpenseButton').addEventListener('click', () => {
-  const amount = parseFloat(document.getElementById('amount').value);
-  const description = document.getElementById('description').value;
-  
-  if (isNaN(amount) || amount <= 0) {
-    alert('Please enter a valid amount');
-    return;
-  }
+document.getElementById('addExpenseButton').addEventListener('click', async () => {
+    const amount = document.getElementById('amount').value;
+    const description = document.getElementById('description').value;
 
-  postExpenseData(amount, description);
+    try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ amount: parseFloat(amount), description: description })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.text();
+        console.log(result);
+
+        // Refresh the total after adding an expense
+        fetchMonthlyTotal();
+    } catch (error) {
+        console.error('Error:', error);
+    }
 });
+
 
 // Fetch the monthly total when the page loads
 document.addEventListener('DOMContentLoaded', fetchMonthlyTotal);
