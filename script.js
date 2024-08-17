@@ -3,7 +3,7 @@ document.getElementById('addExpenseForm').addEventListener('submit', function(ev
   
   const amount = document.getElementById('amount').value;
   if (amount && !isNaN(amount)) {
-    fetch('YOUR_WEB_APP_URL', {
+    fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
