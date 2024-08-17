@@ -26,7 +26,7 @@ document.getElementById('addExpenseForm').addEventListener('submit', function(ev
 });
 
 function updateTotal() {
-  fetch('YOUR_WEB_APP_URL?action=getTotal')
+  fetch('https://script.google.com/macros/s/AKfycbxNO-KolwV0tNZ03lDblSS7vgMDWpKKYc-6ae4Dwy9NCskKwoNvA8LegKxdQu-9r4vN/exec?action=getTotal')
     .then(response => response.json())
     .then(data => {
       document.getElementById('total').textContent = `Total for ${data.month}: $${data.total.toFixed(2)}`;
