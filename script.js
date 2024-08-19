@@ -1,16 +1,23 @@
 // Function to fetch and display the current month's total
 async function fetchMonthlyTotal() {
   try {
-    const response = await fetch('https://keenroudy.com/spending/api/exec'); // Update this URL if needed
-
+    const response = await fetch('https://keenroudy.com/spending/api/exec');
+    
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-
+    
     const data = await response.json();
+    console.log('Fetched data:', data); // Log the data to check its structure
+
+    // Ensure data.total is a number
+    const total = parseFloat(data.total);
+    if (isNaN(total)) {
+      throw new Error('Invalid total value');
+    }
 
     document.getElementById('month').textContent = data.month;
-    document.getElementById('total').textContent = data.total.toFixed(2);
+    document.getElementById('total').textContent = total.toFixed(2);
   } catch (error) {
     console.error('Error fetching data:', error);
     document.getElementById('month').textContent = 'Error';
