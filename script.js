@@ -8,9 +8,10 @@ async function fetchMonthlyTotal() {
     }
     
     const data = await response.json();
+    console.log('Data fetched:', data); // Debugging: Log the fetched data
     
     document.getElementById('month').textContent = data.month;
-    document.getElementById('total').textContent = data.total.toFixed(2);
+    document.getElementById('total').textContent = data.total;
   } catch (error) {
     console.error('Error fetching data:', error);
     document.getElementById('month').textContent = 'Error';
@@ -34,6 +35,7 @@ async function addExpense() {
       });
 
       const result = await response.json();
+      console.log('Result:', result); // Debugging: Log the result
 
       if (result.status === 'success') {
         alert('Expense added successfully');
