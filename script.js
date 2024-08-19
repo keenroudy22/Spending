@@ -1,7 +1,8 @@
 // Function to fetch and display the current month's total
 async function fetchMonthlyTotal() {
   try {
-    const response = await fetch('https://keenroudy.com/spending/api/exec'); // Update this URL if needed
+    // Update the fetch URL to use the Cloudflare Worker route
+    const response = await fetch('https://keenroudy.com/api/exec');
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -25,7 +26,8 @@ async function addExpense() {
 
   if (amount) {
     try {
-      const response = await fetch('https://keenroudy.com/spending/api/exec', { // Update this URL if needed
+      // Update the fetch URL to use the Cloudflare Worker route
+      const response = await fetch('https://keenroudy.com/api/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
