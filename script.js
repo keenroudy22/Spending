@@ -1,13 +1,14 @@
-// Function to fetch and display the current month's total
 async function fetchMonthlyTotal() {
   try {
-    const response = await fetch('https://keenroudy.com/spending/api/exec'); // Update this URL if needed
+    const response = await fetch('https://keenroudy.com/spending/api/exec');
+    console.log('GET response:', response); // Log response details
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
 
     const data = await response.json();
+    console.log('Fetched data:', data); // Log fetched data
 
     document.getElementById('month').textContent = data.month;
     document.getElementById('total').textContent = data.total.toFixed(2);
@@ -18,10 +19,6 @@ async function fetchMonthlyTotal() {
   }
 }
 
-// Call the function to fetch the monthly total when the page loads
-document.addEventListener('DOMContentLoaded', fetchMonthlyTotal);
-
-// Function to handle adding a new expense
 async function addExpense() {
   const amount = document.getElementById('amount').value;
   const description = document.getElementById('description').value;
@@ -35,6 +32,8 @@ async function addExpense() {
         },
         body: JSON.stringify({ amount: parseFloat(amount), description })
       });
+
+      console.log('POST response:', response); // Log response details
 
       const text = await response.text();
       console.log('Response text:', text); // Log the response text
@@ -54,9 +53,5 @@ async function addExpense() {
   }
 }
 
-
-// Add event listener to the button
 document.getElementById('addExpenseButton').addEventListener('click', addExpense);
-
-// Call the function to fetch the monthly total when the page loads
 document.addEventListener('DOMContentLoaded', fetchMonthlyTotal);
