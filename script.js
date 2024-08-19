@@ -1,24 +1,16 @@
 // Function to fetch and display the current month's total
-// Function to fetch and display the current month's total
 async function fetchMonthlyTotal() {
   try {
-    const response = await fetch('https://keenroudy.com/spending/api/exec');
-    
+    const response = await fetch('https://keenroudy.com/spending/api/exec'); // Update this URL if needed
+
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    
-    const data = await response.json();
-    console.log('Fetched data:', data); // Log the data to check its structure
 
-    // Ensure data.total is a number
-    const total = parseFloat(data.total);
-    if (isNaN(total)) {
-      throw new Error('Invalid total value');
-    }
+    const data = await response.json();
 
     document.getElementById('month').textContent = data.month;
-    document.getElementById('total').textContent = total.toFixed(2);
+    document.getElementById('total').textContent = data.total.toFixed(2);
   } catch (error) {
     console.error('Error fetching data:', error);
     document.getElementById('month').textContent = 'Error';
@@ -33,14 +25,13 @@ async function addExpense() {
 
   if (amount) {
     try {
-      // Update the fetch URL to use the Cloudflare Worker route
-const response = await fetch('https://keenroudy.com/spending/api/exec', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({ amount: parseFloat(amount), description })
-});
+      const response = await fetch('https://keenroudy.com/spending/api/exec', { // Update this URL if needed
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ amount: parseFloat(amount), description })
+      });
 
       const result = await response.json();
 
