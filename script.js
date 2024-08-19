@@ -27,13 +27,13 @@ async function addExpense() {
   if (amount) {
     try {
       // Update the fetch URL to use the Cloudflare Worker route
-      const response = await fetch('https://keenroudy.com/api/exec', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ amount: parseFloat(amount), description })
-      });
+const response = await fetch('https://keenroudy.com/spending/api/exec', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ amount: parseFloat(amount), description })
+});
 
       const result = await response.json();
 
