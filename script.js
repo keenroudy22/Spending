@@ -1,7 +1,7 @@
 // Function to fetch and display the current month's total
 async function fetchMonthlyTotal() {
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbwOri4AY3JSXMQSDtjHry17CS-MSaOnNGNlsrVs0SKGo_sUvRpZ-H3KNS6IlTL8pIE/exec');
+    const response = await fetch('https://keenroudy.com/spending/api/exec');
     
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -32,7 +32,7 @@ async function addExpense() {
 
   if (amount) {
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbwOri4AY3JSXMQSDtjHry17CS-MSaOnNGNlsrVs0SKGo_sUvRpZ-H3KNS6IlTL8pIE/exec', {
+      const response = await fetch('https://keenroudy.com/spending/api/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
