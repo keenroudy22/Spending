@@ -1,14 +1,15 @@
+// Function to fetch and display the current month's total
 async function fetchMonthlyTotal() {
   try {
     const response = await fetch('https://keenroudy.com/spending/api/exec');
-    console.log('GET response:', response); // Log response details
+    console.log('GET response:', response);
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
 
     const data = await response.json();
-    console.log('Fetched data:', data); // Log fetched data
+    console.log('Fetched data:', data);
 
     document.getElementById('month').textContent = data.month;
     document.getElementById('total').textContent = data.total.toFixed(2);
@@ -19,6 +20,7 @@ async function fetchMonthlyTotal() {
   }
 }
 
+// Function to handle adding a new expense
 async function addExpense() {
   const amount = document.getElementById('amount').value;
   const description = document.getElementById('description').value;
@@ -32,11 +34,10 @@ async function addExpense() {
         },
         body: JSON.stringify({ amount: parseFloat(amount), description })
       });
-
-      console.log('POST response:', response); // Log response details
+      console.log('POST response:', response);
 
       const text = await response.text();
-      console.log('Response text:', text); // Log the response text
+      console.log('Response text:', text);
 
       const result = JSON.parse(text);
       if (result.status === 'success') {
