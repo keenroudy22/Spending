@@ -26,7 +26,7 @@ async function addExpense() {
 
   if (amount) {
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbwOri4AY3JSXMQSDtjHry17CS-MSaOnNGNlsrVs0SKGo_sUvRpZ-H3KNS6IlTL8pIE/exec', {
+      const response = await fetch('https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbwOri4AY3JSXMQSDtjHry17CS-MSaOnNGNlsrVs0SKGo_sUvRpZ-H3KNS6IlTL8pIE/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
