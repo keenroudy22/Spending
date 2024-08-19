@@ -1,17 +1,17 @@
 // Function to fetch and display the current month's total
 async function fetchMonthlyTotal() {
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbwOri4AY3JSXMQSDtjHry17CS-MSaOnNGNlsrVs0SKGo_sUvRpZ-H3KNS6IlTL8pIE/exec');
-    
+    // Update the fetch URL to use the Cloudflare Worker route
+    const response = await fetch('https://keenroudy.com/api/exec');
+
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    
+
     const data = await response.json();
-    console.log('Data fetched:', data); // Debugging: Log the fetched data
-    
+
     document.getElementById('month').textContent = data.month;
-    document.getElementById('total').textContent = data.total;
+    document.getElementById('total').textContent = data.total.toFixed(2);
   } catch (error) {
     console.error('Error fetching data:', error);
     document.getElementById('month').textContent = 'Error';
@@ -26,17 +26,16 @@ async function addExpense() {
 
   if (amount) {
     try {
-        const response = await fetch('https://cors.bridged.cc/https://script.google.com/macros/s/AKfycbwOri4AY3JSXMQSDtjHry17CS-MSaOnNGNlsrVs0SKGo_sUvRpZ-H3KNS6IlTL8pIE/exec', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ amount: parseFloat(amount), description })
-        });
-
+      // Update the fetch URL to use the Cloudflare Worker route
+      const response = await fetch('https://keenroudy.com/api/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ amount: parseFloat(amount), description })
+      });
 
       const result = await response.json();
-      console.log('Result:', result); // Debugging: Log the result
 
       if (result.status === 'success') {
         alert('Expense added successfully');
